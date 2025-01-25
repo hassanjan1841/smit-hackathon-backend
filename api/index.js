@@ -26,6 +26,9 @@ app.use(
 );
 
 // routes
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 app.use("/api/auth", AuthRoute);
 app.use("/api/user", authenticateToken, UserRoute);
 // testing
