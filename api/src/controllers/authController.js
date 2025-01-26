@@ -21,16 +21,16 @@ const login = async (req, res) => {
     const token = generateAccessToken(user);
     if (!token) {
       return sendResponse(res, "Error generating token", null, true, 500);
-    }
-    if (isPasswordValid) {
-      return sendResponse(
-        res,
-        "Change Your Password",
-        { changePass: true },
-        true,
-        200
-      );
-    }
+    // }
+    // if (isPasswordValid) {
+    //   return sendResponse(
+    //     res,
+    //     "Change Your Password",
+    //     { changePass: true },
+    //     true,
+    //     200
+    //   );
+    // }
 
     sendResponse(res, "User found", { user, token });
   } catch (error) {
