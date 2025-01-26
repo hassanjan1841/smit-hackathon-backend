@@ -10,7 +10,7 @@ import {
 } from "../controllers/userController.js";
 
 router.get("/", getAllUsers);
-router.get("/me", getCurrentUser);
+router.post("/me", getCurrentUser);
 router.get("/:id", getUser);
 
 router.post("/", createUser);

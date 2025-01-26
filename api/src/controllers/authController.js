@@ -22,7 +22,15 @@ const login = async (req, res) => {
     if (!token) {
       return sendResponse(res, "Error generating token", null, true, 500);
     }
-    console.log("token", token);
+    if (isPasswordValid) {
+      return sendResponse(
+        res,
+        "Change Your Password",
+        { changePass: true },
+        true,
+        200
+      );
+    }
 
     sendResponse(res, "User found", { user, token });
   } catch (error) {
@@ -33,15 +41,15 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { email } = req.body;
     // Check if user already exists
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
       return sendResponse(res, "User already exists", null, true, 400);
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash("Saylani@loan", 10);
     // Create new user
-    const newUser = new User({ email, password: hashedPassword, name });
+    const newUser = new User({ ...req.body, password: hashedPassword });
     await newUser.save();
     const token = generateAccessToken(newUser);
     if (!token) {

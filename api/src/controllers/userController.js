@@ -94,31 +94,16 @@ const deleteUser = async (req, res) => {
 const getCurrentUser = async (req, res) => {
   try {
     const tokenUser = req.user;
-    const Model = tokenUser._doc.role === "teacher" ? Teacher : Student;
-    const user = await Model.findById(tokenUser._doc._id)
-      .populate({
-        path: "section",
-        populate: [{ path: "batch" }, { path: "teacher" }, { path: "course" }],
-      })
-      .populate({
-        path: "courses",
-        populate: [
-          {
-            path: "batch",
-            populate: [{ path: "course" }, { path: "branch" }],
-          },
-          {
-            path: "course",
-          },
-        ],
-      });
+    console.log("tokenUser", tokenUser);
+    const user = await User.findById(tokenUser._doc._id);
+    console.log("userincurerntuser", user);
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
-    res.status(200).json(user);
+    sendResponse(res, "User retrieved successfully", user);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    sendResponse(res, error.message, null, true, 500);
   }
 };
 

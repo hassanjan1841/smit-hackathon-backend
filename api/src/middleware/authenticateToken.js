@@ -8,14 +8,15 @@ function authenticateToken(req, res, next) {
       .status(401)
       .json({ message: "Access token is missing or invalid" });
   }
-
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       console.error(err);
       return res.sendStatus(403);
     }
     req.user = user;
+
     req.decodedToken = jwt.decode(token);
+
     next();
   });
 }
